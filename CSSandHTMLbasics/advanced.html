@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Strona z obrazkiem</title>
+  <style>
+    body {
+      margin: 100;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+    }
+
+    .header {
+        position: absolute;
+        text-align: right;       
+        top: 10px;
+        right: 10px;
+    }
+
+    a{
+        color:black;
+        text-decoration: none;
+        margin: 10px;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+
+    #textfield {
+      margin-top: 50px;
+      width: 500px;
+      height: 30px;
+      border-radius:5px;
+    }
+
+    input{
+        margin: 5px;
+    }
+
+    #button {
+        font-size: 15px;
+        margin:30px;
+        padding: 8px;
+        text-align: center;
+        border-radius:5px;
+        width: 100px
+    }
+
+    #textfield:hover{
+        background-color:rgb(240, 240, 240) ;
+    }
+    #button:hover{
+        background-color: darkslategray;
+        color:white
+    }
+  </style>
+</head>
+<body>
+    <div class="header">
+        <a href="image.html">Image searching</a>
+        <a href="index.html">Advanced searching</a>
+    </div>
+
+    <form action="https://www.google.com/search">
+        <label for="search-term">Szukaj frazy:</label>
+        <input type="text" id="search-term" name="as_q" placeholder="Wpisz frazę">
+        <br>
+        <label for="exact-phrase">Dokładna fraza:</label>
+        <input type="text" id="exact-phrase" name="as_epq" placeholder="Wpisz dokładną frazę">
+        <br>
+        <label for="exclude-words">Wyklucz słowa:</label>
+        <input type="text" id="exclude-words" name="as_eq" placeholder="Wyklucz słowa">
+        <br>
+        <label for="include-words">Zawierające słowa:</label>
+        <input type="text" id="include-words" name="as_oq" placeholder="Zawierające słowa">
+        <br>
+        <label for="language">Język:</label>
+        <select id="language" name="lr">
+            <option value="lang_en">Angielski</option>
+            <option value="lang_pl">Polski</option>
+      <!-- Dodaj inne opcje językowe w <option> -->
+        </select>
+        <input id="button" type="submit" value="Search">
+    </form>
+
+</body>
+</html>

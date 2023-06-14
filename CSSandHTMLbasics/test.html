@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Advanced Search</title>
+</head>
+<body>
+  <h1>Google Advanced Search</h1>
+  <form action="https://www.google.com/advanced_search">
+    <label for="search-term">Szukaj frazy:</label>
+    <input type="text" id="search-term" name="as_q" placeholder="Wpisz frazę">
+    <br>
+    <label for="exact-phrase">Dokładna fraza:</label>
+    <input type="text" id="exact-phrase" name="as_epq" placeholder="Wpisz dokładną frazę">
+    <br>
+    <label for="exclude-words">Wyklucz słowa:</label>
+    <input type="text" id="exclude-words" name="as_eq" placeholder="Wyklucz słowa">
+    <br>
+    <label for="include-words">Zawierające słowa:</label>
+    <input type="text" id="include-words" name="as_oq" placeholder="Zawierające słowa">
+    <br>
+    <label for="language">Język:</label>
+    <select id="language" name="lr">
+      <option value="lang_en">Angielski</option>
+      <option value="lang_pl">Polski</option>
+      <!-- Dodaj inne opcje językowe w <option> -->
+    </select>
+    <br>
+    <input type="submit" value="Szukaj">
+  </form>
+</body>
+</html>

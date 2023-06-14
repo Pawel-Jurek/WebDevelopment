@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Strona z obrazkiem</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+        position: absolute;
+        text-align: right;       
+        top: 10px;
+        right: 10px;
+    }
+
+    a{
+        color:black;
+        text-decoration: none;
+        margin: 10px;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+
+    .image-container {
+        transform: scale(1.3);
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    #textfield {
+      margin-top: 50px;
+      width: 500px;
+      height: 30px;
+      border-radius:5px;
+    }
+
+    form{
+        text-align: center;
+    }
+
+    #button {
+        font-size: 15px;
+        margin:30px;
+        padding: 8px;
+        text-align: center;
+        border-radius:5px;
+        width: 100px
+    }
+
+    #textfield:hover{
+        background-color:rgb(240, 240, 240) ;
+    }
+    #button:hover{
+        background-color: darkslategray;
+        color:white
+    }
+  </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">Default searching</a>
+        <a href="advanced.html">Advanced searching</a>
+    </div>
+
+    <div class="image-container">
+        <img src="myGoogleGraphicsIMG.png" alt="GoogleIMG">
+    </div>
+
+    <form action="https://www.google.com/search">
+        <input id="textfield" type="text" name="q" placeholder="Search image in Google">
+        <input type="hidden" name="tbm" value="isch">
+        <br>
+        <input id="button" type="submit" value="Search">
+    </form>
+
+</body>
+</html>
