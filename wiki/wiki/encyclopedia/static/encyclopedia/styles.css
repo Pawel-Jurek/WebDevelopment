@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    background-color: white;
+
+}
+
+code {
+    white-space: pre;
+}
+
+h1 {
+    margin-top: 0px;
+    padding-top: 20px;
+}
+
+.main {
+    padding: 10px;
+}
+
+.search {
+    width: 100%;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+.sidebar {
+    background-color: #f0f0f0;
+    height: 100%;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-top: 5px;
+}
+
+#textbox-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+    flex-direction: column;
+  }
+  
+#textbox{
+    width: 100%;
+    height: 60vh;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+    resize: none;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+#titlebox {
+    width: 100%;
+    height: 36px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+    resize: none;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .description{
+    margin-top: 20px;
+  }
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+#createPageButton {
+    background-color: #37b53b;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#createPageButton:hover{
+    background-color: #1e6721;
+}

@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    {% if isSubstring %}
+        <h2>You may be looking for one of these words:</h2>
+        <ul>
+            {% for word in possibleWords %}
+            <li> <a href="{% url 'wiki' word=word %}">{{ word }} </a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% if entry %}
+            {{entry | safe}}
+            <a href="{% url 'updatePage' title=actualTitle %}">Edit this page</a>
+        {% else %}
+            <h2>The phrase {{possibleWords}} is not found. Try again</h2>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %} 
+
+{% block body %}
+    
+    <h2>You are updating {{title}} page on Wiki</h2>
+
+    <form id ="textboxContainer" method="post">
+        {% csrf_token %}
+        <label class="description" for="textbox">Text in MarkDown format:</label>
+        <textarea id="textbox" name="bodyText" placeholder="Here you can write your text" class="form-control" required>{{text}}</textarea>
+        <div class="form-group" style="text-align: center; padding-top: 15px;" >
+            <button id="createPageButton" type="submit">Update Page</button>
+        </div>
+    </form>
+
+{% endblock %}

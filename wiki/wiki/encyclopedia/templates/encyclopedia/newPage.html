@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %} 
+
+{% block body %}
+    {% if duplicate %}
+        <div class="alert alert-danger" role="alert">
+            Page with the same page is already created. Change name or edit existing page.
+        </div>
+    {% endif %}
+    <h2>Page for creating your page on Wiki</h2>
+
+    <form id ="textboxContainer" method="post">
+        {% csrf_token %}
+        <label class="description" for="titlebox">Write title for your page:</label>
+        <input id="titlebox" name="titleText" type="text" value="{{titlebox}}" class="form-control"  placeholder="Here write the title of your page" required>
+        <label class="description" for="textbox">Write your text in MarkDown format:</label>
+        <textarea id="textbox" name="bodyText" placeholder="Here you can write your text" class="form-control" required>{{maintext}}</textarea>
+        <div class="form-group" style="text-align: center; padding-top: 15px;" >
+            <button id="createPageButton" type="submit">Create New Page</button>
+        </div>
+    </form>
+
+{% endblock %}
