@@ -22,7 +22,7 @@ class Category(models.Model):
 class Auction(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=300)
-    starting_bid = models.DecimalField(max_digits=15, decimal_places=2)
+    current_bid = models.DecimalField(max_digits=15, decimal_places=2)
     created_date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="images/auctions/", default=get_default_image_path)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="auctionCategory")

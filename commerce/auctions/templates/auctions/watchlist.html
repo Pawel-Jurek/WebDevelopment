@@ -20,7 +20,7 @@
             <ul class="list-group list-group-horizontal">
                 <li class="list-group-item"><img src="{{ listing.image.url }}" alt="Obrazek"></li>
                 <li class="list-group-item">{{ listing.title }}</li>
-                <li class="list-group-item">{{ listing.starting_bid }}$</li>
+                <li class="list-group-item">{{ listing.current_bid }}$</li>
                 <li class="list-group-item"><a href="{% url 'product' listing.id %}">More details</a></li>
                 <li class="list-group-item">
                     <form method="post" action="{% url 'add_to_watchlist' listing.id %}">

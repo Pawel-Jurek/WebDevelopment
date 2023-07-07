@@ -11,11 +11,35 @@
 
     <div class="description-container">
         <div class="row">
-          <div class="col-6">Created by '{{product.author}}' on {{product.created_date}}</div>
-          <div class="col-3">Category: {{product.category}}</div>
-          <div class="col-3">Currunt bid: {{product.starting_bid}}$</div>
+          <div class="col-8">Created by '{{product.author}}' on {{product.created_date}}</div>
+          <div class="col-4">Category: {{product.category}}</div>
+          <div class="col-4">Current bid: {{product.current_bid}}$</div>
+          <div class="col-8">Bid owner: {{bid_owner}}</div>
           <div class="col-12">Description:<br>{{product.description}}</div>
-        </div>
+        </div>      
     </div>
+    <div class="page-container">
+        <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group mb-3" id="bid-input">    
+                <input type="text" class="form-control" name="user_bid" placeholder="Enter your bid which must be higher than current bid" aria-label="Bid value" min="{{ product.current_bid }}">
+                <button type="submit" name="bid_submit" class="btn btn-success">Submit</button>            
+            </div>
+        </form>
+
+        <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-floating" style="padding-top: 7px; text-align: center;">
+                <textarea class="form-control" name="user_comment" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px;"></textarea>
+                <button type="submit" name="comment_submit" class="btn btn-success" style="margin:5px">Submit</button>
+            </div>
+        </form>
+        Comments:
+        <div class="row">
+            {% for comment in comments %}
+                <div class="col-12" style="border:solid 1px ;">{{comment.user}}:<br>{{comment.text}}</div>
+            {% endfor %}
+        </div>
+    </div>   
     <a href="{% url 'index' %}">Back to main menu</a>
 {% endblock %}

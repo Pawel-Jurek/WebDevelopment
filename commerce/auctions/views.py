@@ -9,15 +9,19 @@ from django.db.models import Q
 
 
 from .models import User, Comment, Bid, Auction, WatchList, Category
+from decimal import Decimal
 
 
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ['title', 'description', 'starting_bid', 'image', 'category']
+        fields = ['title', 'description', 'current_bid', 'image', 'category']
+        labels = {'current_bid': 'Starting bid'}
 
 class WatchlistButton(forms.Form):
     pass
+
+
 
 def index(request, category_id = 0):
     clicked = []
@@ -120,12 +124,46 @@ def addListing(request):
         "categories": categories
     })
 
+
 def product(request, product_id):
     categories = Category.objects.all()
     product = Auction.objects.get(id=product_id)
-    return render(request, "auctions/product.html",{
+    bid = Bid.objects.filter(auction=product_id).order_by('-value').first()
+    if bid:    
+        bid_owner = bid.user.username
+    else:
+        bid_owner = product.author.username
+
+    if request.method == "POST":
+        if "bid_submit" in request.POST:
+            user_bid = request.POST.get("user_bid")
+            print(f"\nuser_bid: {user_bid}")
+            if product.current_bid is None or Decimal(user_bid) > product.current_bid:
+                new_bid = Bid()
+                new_bid.user = request.user
+                new_bid.auction = product
+                new_bid.value = Decimal(str(user_bid))
+                new_bid.save()
+                product.current_bid = new_bid.value
+                product.save()
+                print(f"\nnew bid: {product.current_bid}")
+                return redirect('product', product_id=product_id)
+        
+        elif "comment_submit" in request.POST:
+            user_comment = request.POST.get("user_comment")
+            newComment = Comment()
+            newComment.user = request.user
+            newComment.text = user_comment
+            newComment.auction = product
+            newComment.save()
+            return redirect('product', product_id=product_id)
+    
+    all_comments = Comment.objects.all()
+    return render(request, "auctions/product.html", {
         "product": product,
-        "categories": categories
+        "categories": categories,
+        "bid_owner": bid_owner,
+        "comments": all_comments
     })
 
 

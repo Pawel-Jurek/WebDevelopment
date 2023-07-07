@@ -8,7 +8,7 @@
             <ul class="list-group list-group-horizontal">
                 <li class="list-group-item"><img src="{{ listing.image.url }}" alt="Obrazek"></li>
                 <li class="list-group-item">{{ listing.title }}</li>
-                <li class="list-group-item">{{ listing.starting_bid }}$</li>
+                <li class="list-group-item">{{ listing.current_bid }}$</li>
                 <li class="list-group-item"><a href="{% url 'product' listing.id %}">More details</a></li>
                 {% if user.is_authenticated %}
                 <li class="list-group-item">
