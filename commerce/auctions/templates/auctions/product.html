@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="image-container">
+        <div class="text-container"> </div>
+        <img src="{{product.image.url}}" class="img-fluid" alt="Product image">
+        <div class="text-container">
+            {{product.title}}
+        </div>
+    </div>
+
+    <div class="description-container">
+        <div class="row">
+          <div class="col-6">Created by '{{product.author}}' on {{product.created_date}}</div>
+          <div class="col-3">Category: {{product.category}}</div>
+          <div class="col-3">Currunt bid: {{product.starting_bid}}$</div>
+          <div class="col-12">Description:<br>{{product.description}}</div>
+        </div>
+    </div>
+    <a href="{% url 'index' %}">Back to main menu</a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Your Watchlist</h2>
+    <ul class="nav nav-tabs">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="{% url 'index' %}" role="button" aria-expanded="false">Select Category</a>
+            <ul class="dropdown-menu">
+                {% for category in categories %}
+                    <li><a class="dropdown-item" href="{% url 'watchlistWithCateogry' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'watchlist' %}">All</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    {% for listing in listings %}
+        <div class="product">
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item"><img src="{{ listing.image.url }}" alt="Obrazek"></li>
+                <li class="list-group-item">{{ listing.title }}</li>
+                <li class="list-group-item">{{ listing.starting_bid }}$</li>
+                <li class="list-group-item"><a href="{% url 'product' listing.id %}">More details</a></li>
+                <li class="list-group-item">
+                    <form method="post" action="{% url 'add_to_watchlist' listing.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="{% if listing.id in clicked %}buttonChecked{% else %}buttonNotChecked{% endif %}">
+                            {% if listing.id in clicked %}Remove from watchlist{% else %}Add to watchlist{% endif %}
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {% endfor %}
+
+{% endblock %}
