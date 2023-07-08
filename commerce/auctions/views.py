@@ -28,8 +28,10 @@ def index(request, category_id = 0):
     categories = Category.objects.all()
     if category_id:
         listings = Auction.objects.filter(category_id=category_id)
+        category_name = Category.objects.get(id= category_id).name
     else:
         listings = Auction.objects.all()
+        category_name = "All"
     if request.user.is_authenticated:
         user = request.user
         watchlist, created = WatchList.objects.get_or_create(user=user)
@@ -37,7 +39,8 @@ def index(request, category_id = 0):
     return render(request, "auctions/index.html",{
         "listings": listings,
         "clicked": clicked,
-        "categories": categories
+        "categories": categories,
+        "category": category_name
     })
 
 
@@ -158,12 +161,13 @@ def product(request, product_id):
             newComment.save()
             return redirect('product', product_id=product_id)
     
-    all_comments = Comment.objects.all()
+    all_comments = Comment.objects.filter(id=product_id)
     return render(request, "auctions/product.html", {
         "product": product,
         "categories": categories,
         "bid_owner": bid_owner,
-        "comments": all_comments
+        "comments": all_comments,
+        "auction_owner": product.author == request.user
     })
 
 
@@ -182,4 +186,26 @@ def watchlist(request, category_id = 0):
         "listings": listings.filter(Q(id__in=clicked)),
         "clicked": clicked,
         "categories": categories
+    })
+
+@login_required
+def user_offers(request, user, category_id=0):
+    user = request.user
+    listings = Auction.objects.filter(author = user)
+    clicked = []
+    categories = Category.objects.all()
+    if category_id:
+        listings = Auction.objects.filter(category_id=category_id)
+        category_name = Category.objects.get(id= category_id).name
+    else:
+        listings = Auction.objects.all()
+        category_name = "All"
+   
+    watchlist, created = WatchList.objects.get_or_create(user=user)
+    clicked = [offer.id for offer in watchlist.offer.all()]
+    return render(request, "auctions/offers.html",{
+        "listings": listings,
+        "clicked": clicked,
+        "categories": categories,
+        "category": category_name
     })

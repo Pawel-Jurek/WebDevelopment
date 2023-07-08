@@ -27,6 +27,7 @@ class Auction(models.Model):
     image = models.ImageField(upload_to="images/auctions/", default=get_default_image_path)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="auctionCategory")
     author = models.ForeignKey(User, on_delete=models.CASCADE, default = 1, related_name="auctionAutor")
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return f"{self.title} created by: {self.author}"
     
