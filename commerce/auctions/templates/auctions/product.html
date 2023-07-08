@@ -19,11 +19,12 @@
         </div>      
     </div>
     <div class="page-container">
-        {% if auction_owner %}
+        {% if auction_owner and user.is_authenticated %}
             <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <button type="submit" name="end_auction" class="btn btn-danger" style="width: 100%;">End Auction</button>  
             </form>
-        {% else %}
+        {% elif user.is_authenticated %}
             <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="input-group mb-3" id="bid-input">    

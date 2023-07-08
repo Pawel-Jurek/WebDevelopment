@@ -160,8 +160,13 @@ def product(request, product_id):
             newComment.auction = product
             newComment.save()
             return redirect('product', product_id=product_id)
+        
+        elif "end_auction" in request.POST:
+            auction_buyer = Bid.objects.get(auction = product, value = bid.value).user
+            print(f"\nAuction winner: {auction_buyer}")
+            return redirect('product', product_id=product_id)
     
-    all_comments = Comment.objects.filter(id=product_id)
+    all_comments = Comment.objects.filter(auction=product_id)
     return render(request, "auctions/product.html", {
         "product": product,
         "categories": categories,
