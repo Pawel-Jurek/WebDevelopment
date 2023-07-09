@@ -3,6 +3,8 @@
 {% block body %}
     <h2>{{category}} active listings</h2>
 
+    {% include "auctions/notifications.html" %}
+
     {% for listing in listings %}
         <div class="product">
             <ul class="list-group list-group-horizontal">
