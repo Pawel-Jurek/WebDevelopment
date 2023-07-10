@@ -25,15 +25,21 @@
                 {% csrf_token %}
                 <button type="submit" name="end_auction" class="btn btn-danger" style="width: 100%;">End Auction</button>  
             </form>
-        {% elif user.is_authenticated %}
+            {% elif user.is_authenticated %}
             <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="input-group mb-3" id="bid-input">    
-                    <input type="text" class="form-control" name="user_bid" placeholder="Enter your bid which must be higher than current bid" aria-label="Bid value" min="{{ product.current_bid }}">
-                    <button type="submit" name="bid_submit" class="btn btn-success">Submit</button>            
+                <div style="display: flex; margin-top: 5px;">
+                    <div style="flex-grow: 1;">
+                        {{ form.user_bid }}
+                    </div>
+                    <div>
+                        <button type="submit" name="bid_submit" class="btn btn-success">Submit</button>
+                    </div>
                 </div>
             </form>
 
+            
+            
             <form action="{% url 'product' product.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-floating" style="padding-top: 7px; text-align: center;">
