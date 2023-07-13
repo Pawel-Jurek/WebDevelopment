@@ -6,10 +6,11 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.validators import MinValueValidator
 
 
 from .models import User, Comment, Bid, Auction, WatchList, Category
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal
 
 
 class AuctionForm(forms.ModelForm):
@@ -22,6 +23,7 @@ class AuctionForm(forms.ModelForm):
 class WatchlistButton(forms.Form):
     pass
 
+'''
 class BidForm(forms.Form):
     user_bid = forms.DecimalField(
         widget=forms.NumberInput(attrs={
@@ -31,7 +33,6 @@ class BidForm(forms.Form):
             'name': 'user_bid',
             'min': 0.01
         }),
-        min_value=0.01,
         max_digits=15,
         decimal_places=2,
         label=''
@@ -39,17 +40,45 @@ class BidForm(forms.Form):
 
     def __init__(self, current_bid=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if current_bid:
-            min_bid = Decimal(str(current_bid)) + Decimal('0.01')
+        if current_bid is not None:
+            print("inicjalizacja")
+            min_bid = current_bid + Decimal('0.01')
             self.fields['user_bid'].widget.attrs['min'] = str(min_bid)
-            self.fields['user_bid'].min_value = min_bid
-    
+
+    def clean_user_bid(self):
+        cleaned_data = super().clean()
+        user_bid = cleaned_data.get('user_bid')
+        current_bid = self.fields['user_bid'].widget.attrs.get('min')
+        if current_bid and user_bid and user_bid <= Decimal(current_bid):
+            raise forms.ValidationError("Your bid must be higher than the current bid.")
+'''
+
+class BidForm(forms.ModelForm):
+    class Meta:
+        model = Auction
+        fields = ['current_bid']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['current_bid'].widget.attrs['class'] = 'form-control'
+        self.fields['current_bid'].widget.attrs['placeholder'] = 'Enter your bid which must be higher than current bid'
+        self.fields['current_bid'].widget.attrs['aria-label'] = 'Bid value'
+        self.fields['current_bid'].widget.attrs['name'] = 'user_bid'
+        self.fields['current_bid'].widget.attrs['min'] = '0.01'
+        self.fields['current_bid'].label = ''
+
+    def clean_current_bid(self):
+        current_bid = self.cleaned_data.get('current_bid')
+        if current_bid is not None and current_bid <= self.instance.current_bid:
+            raise forms.ValidationError("Your bid must be higher than the current bid.")
+        return current_bid
+
 
 def index(request, category_id = 0):
     clicked = []
     winner_auctions = []
     if request.user.is_authenticated:
-        winner_auctions = Auction.objects.filter(is_active = True, winner =  request.user)
+        winner_auctions = Auction.objects.filter(confirmed = False, winner =  request.user)
     categories = Category.objects.all()
     if category_id:
         listings = Auction.objects.filter(category_id=category_id)
@@ -73,7 +102,6 @@ def index(request, category_id = 0):
 
 @login_required
 def add_to_watchlist(request, auction_id):
-    winner_auctions = Auction.objects.filter(is_active = True, winner =  request.user)
     auction = Auction.objects.get(id=auction_id)
     user = request.user
     watchlist, created = WatchList.objects.get_or_create(user=user)
@@ -141,7 +169,7 @@ def register(request):
 @login_required
 def addListing(request):
     categories = Category.objects.all()
-    winner_auctions = Auction.objects.filter(is_active = True, winner =  request.user)
+    winner_auctions = Auction.objects.filter(confirmed = False, winner =  request.user)
     if request.method == 'POST':
         form = AuctionForm(request.POST, request.FILES)
         if form.is_valid():
@@ -170,24 +198,28 @@ def product(request, product_id):
         bid_owner = product.author.username
 
     if request.user.is_authenticated:
-        winner_auctions = Auction.objects.filter(is_active=True, winner=request.user)       
+        winner_auctions = Auction.objects.filter(confirmed=False, winner=request.user)       
     else:
         winner_auctions = []
 
-    form = BidForm(current_bid=product.current_bid)
-
+    #current_bid = Decimal(str(product.current_bid)).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
+    #form = BidForm(current_bid=current_bid)
+    form = BidForm(instance=product)
     if request.method == "POST":
         if "bid_submit" in request.POST:
-            form = BidForm(request.POST, current_bid=product.current_bid)
+            form = BidForm(request.POST,instance=product)
             if form.is_valid():
-                user_bid = form.cleaned_data["user_bid"]
-                if product.current_bid is None or user_bid > product.current_bid:
-                    new_bid = Bid(user=request.user, auction=product, value=user_bid)
-                    new_bid.save()
-                    product.current_bid = new_bid.value
-                    product.save()
-                    print(f"\nnew bid: {product.current_bid}")
-                    return redirect('product', product_id=product_id)
+                user_bid = form.cleaned_data["current_bid"]
+                new_bid = Bid(user=request.user, auction=product, value=user_bid)
+                new_bid.save()
+                product.current_bid = new_bid.value
+                product.save()
+                return redirect('product', product_id=product_id)
+            else:
+                print(f"Errors:{form.errors.as_data()}\n") 
+                print(f"Errors:{form.is_bound}") 
+                        
+            
         
         elif "comment_submit" in request.POST:
             user_comment = request.POST.get("user_comment")
@@ -197,12 +229,15 @@ def product(request, product_id):
             return redirect('product', product_id=product_id)
         
         elif "end_auction" in request.POST:
-            auction_buyer = Bid.objects.get(auction=product, value=bid.value).user
-            product.winner = auction_buyer
+            if bid is None:
+                product.winner = None
+                product.confirmed = True
+            else:
+                product.winner = Bid.objects.get(auction=product, value=bid.value).user
+            product.is_active = False
             product.save()
-            print(f"\nAuction winner: {product.winner}")
-            return redirect('product', product_id=product_id)
-        
+            return redirect('index')
+    
     all_comments = Comment.objects.filter(auction=product_id)
     return render(request, "auctions/product.html", {
         "product": product,
@@ -218,7 +253,7 @@ def product(request, product_id):
 @login_required
 def watchlist(request, category_id = 0):
     clicked = []
-    winner_auctions = Auction.objects.filter(is_active = True, winner =  request.user)
+    winner_auctions = Auction.objects.filter(confirmed = False, winner =  request.user)
     categories = Category.objects.all()
     if category_id:
         listings = Auction.objects.filter(category_id=category_id)
@@ -241,7 +276,7 @@ def user_offers(request, user, category_id=0):
     listings = Auction.objects.filter(author=user, is_active = True)
     notactive_listings = Auction.objects.filter(author=user, is_active = False)
     won_listings = Auction.objects.filter(winner = user)
-    winner_auctions = Auction.objects.filter(is_active = True, winner =  user)
+    winner_auctions = Auction.objects.filter(confirmed = False, winner =  user)
     clicked = []
     categories = Category.objects.all()
     if category_id:
@@ -267,7 +302,7 @@ def user_offers(request, user, category_id=0):
 def close_listing(request, listing_id):
     if request.method == "POST" and "close_button" in request.POST:
         product = Auction.objects.get(id = listing_id)
-        product.is_active = False
+        product.confirmed = True
         product.save()
         print("zamykanie aukcji")
         return redirect(request.META.get('HTTP_REFERER', '/'))

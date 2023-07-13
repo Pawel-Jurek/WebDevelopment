@@ -29,6 +29,7 @@ class Auction(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="auctionAutor")
     is_active = models.BooleanField(default=True)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default = None, related_name="auctionBuyer")
+    confirmed = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.title} created by: {self.author}"
     
@@ -43,7 +44,7 @@ class WatchList(models.Model):
     
 
 class Bid(models.Model):
-    value = models.DecimalField(max_digits=15, decimal_places=2)
+    value = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bid_owner")
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name="auction_bid")
 

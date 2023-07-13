@@ -2,6 +2,7 @@
 
 {% block body %}
     {% include "auctions/notifications.html" %} 
+
     <div class="image-container">
         <div class="text-container"> </div>
         <img src="{{product.image.url}}" class="img-fluid" alt="Product image">
@@ -30,7 +31,18 @@
                 {% csrf_token %}
                 <div style="display: flex; margin-top: 5px;">
                     <div style="flex-grow: 1;">
-                        {{ form.user_bid }}
+                        {{ form.current_bid }}
+                        {% if form.errors %}
+                            <ul class="errorlist">
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
                     <div>
                         <button type="submit" name="bid_submit" class="btn btn-success">Submit</button>
