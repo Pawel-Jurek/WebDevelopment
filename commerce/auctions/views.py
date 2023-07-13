@@ -23,35 +23,6 @@ class AuctionForm(forms.ModelForm):
 class WatchlistButton(forms.Form):
     pass
 
-'''
-class BidForm(forms.Form):
-    user_bid = forms.DecimalField(
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter your bid which must be higher than current bid',
-            'aria-label': 'Bid value',
-            'name': 'user_bid',
-            'min': 0.01
-        }),
-        max_digits=15,
-        decimal_places=2,
-        label=''
-    )
-
-    def __init__(self, current_bid=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if current_bid is not None:
-            print("inicjalizacja")
-            min_bid = current_bid + Decimal('0.01')
-            self.fields['user_bid'].widget.attrs['min'] = str(min_bid)
-
-    def clean_user_bid(self):
-        cleaned_data = super().clean()
-        user_bid = cleaned_data.get('user_bid')
-        current_bid = self.fields['user_bid'].widget.attrs.get('min')
-        if current_bid and user_bid and user_bid <= Decimal(current_bid):
-            raise forms.ValidationError("Your bid must be higher than the current bid.")
-'''
 
 class BidForm(forms.ModelForm):
     class Meta:
@@ -202,8 +173,6 @@ def product(request, product_id):
     else:
         winner_auctions = []
 
-    #current_bid = Decimal(str(product.current_bid)).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
-    #form = BidForm(current_bid=current_bid)
     form = BidForm(instance=product)
     if request.method == "POST":
         if "bid_submit" in request.POST:
@@ -217,9 +186,7 @@ def product(request, product_id):
                 return redirect('product', product_id=product_id)
             else:
                 print(f"Errors:{form.errors.as_data()}\n") 
-                print(f"Errors:{form.is_bound}") 
-                        
-            
+                print(f"Errors:{form.is_bound}")            
         
         elif "comment_submit" in request.POST:
             user_comment = request.POST.get("user_comment")
