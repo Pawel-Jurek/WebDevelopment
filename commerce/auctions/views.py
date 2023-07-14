@@ -223,9 +223,9 @@ def watchlist(request, category_id = 0):
     winner_auctions = Auction.objects.filter(confirmed = False, winner =  request.user)
     categories = Category.objects.all()
     if category_id:
-        listings = Auction.objects.filter(category_id=category_id)
+        listings = Auction.objects.filter(category_id=category_id, is_active=True)
     else:
-        listings = Auction.objects.all()
+        listings = Auction.objects.filter(is_active=True)
 
 
     clicked = [offer.id for offer in WatchList.objects.get(user = request.user).offer.all()]
