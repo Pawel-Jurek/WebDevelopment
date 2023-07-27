@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{category}} your offers</h2>
+    {% include "auctions/notifications.html" %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="{% url 'index' %}" role="button" aria-expanded="false">Select Category</a>
+            <ul class="dropdown-menu">
+                {% for category in categories %}
+                    <li><a class="dropdown-item" href="{% url 'user_offers_withCategory' user category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'user_offers' user %}">All</a></li>
+            </ul>
+        </li>
+    </ul>
+    Created active auctions:
+    {% for listing in createdlistings %}
+        {% include "auctions/activeListing.html" %}
+    {% endfor %}
+    <hr>
+    Sold auctions:
+    {% for listing in notactive_listings %}
+        {% include "auctions/nonActiveListing.html" %}
+    {% endfor %}
+    <hr>
+    Won auctions:
+    {% for listing in wonlistings %}
+        {% include "auctions/nonActiveListing.html" %}
+    {% endfor %}
+
+{% endblock %}

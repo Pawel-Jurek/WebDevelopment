@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+    {% for listing in winner_auctions %}
+        {% if listing.winner == user %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <form action="{% url 'close_listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    You successfully bought {{ listing }}
+                    <button type="submit" class="btn-close" name="close_button" data-bs-dismiss="alert" aria-label="Close">X</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
