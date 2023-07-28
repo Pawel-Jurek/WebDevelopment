@@ -1,3 +1,24 @@
 textarea {
     min-height: 400px;
 }
+
+ 
+.email-item {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+    background-color: #e3dfdf;
+}
+
+.email-item td {
+    border: 1px solid #b0b0b0;
+    padding: 10px;
+    text-align: left;
+}
+
+.email-item.clicked {
+    background-color: #d03636;
+  }
+  
+  
+  

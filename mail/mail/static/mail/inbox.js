@@ -56,5 +56,52 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  const mailboxHeader = document.createElement('h3');
+  mailboxHeader.textContent = `${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`;
+  
+  const container = document.querySelector('#emails-view');
+  container.innerHTML = '';
+  container.appendChild(mailboxHeader);
+  
+  fetch('/emails/inbox')
+  .then(response => response.json())
+  .then(emails => {
+    // Print emails
+    console.log(emails);
+    emails.forEach(email => {
+      const table = document.createElement('table');
+      table.classList.add('email-item'); // Adding class do every email-item
+
+      const row = document.createElement('tr');
+
+      // Sender column
+      const senderCell = document.createElement('td');
+      senderCell.style.width = '25%';
+      senderCell.textContent = email.sender;
+      row.appendChild(senderCell);
+
+      // Subject column
+      const subjectCell = document.createElement('td');
+      subjectCell.style.width = '35%';
+      subjectCell.textContent = email.subject;
+      row.appendChild(subjectCell);
+
+      // Timestamp column
+      const timestampCell = document.createElement('td');
+      timestampCell.style.width = '20%';
+      timestampCell.textContent = email.timestamp;
+      row.appendChild(timestampCell);
+
+      table.appendChild(row);
+      table.addEventListener('click', function() {
+        console.log('This element has been clicked!')
+      });
+      container.appendChild(table);
+    });
+
+  })
+  .catch(error => {
+    console.error('Error', error);
+  });
+  return false;
 }
