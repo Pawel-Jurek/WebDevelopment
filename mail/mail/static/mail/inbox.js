@@ -15,6 +15,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-details').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -54,6 +55,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-details').style.display = 'none';
 
   // Show the mailbox name
   const mailboxHeader = document.createElement('h3');
@@ -77,7 +79,9 @@ function load_mailbox(mailbox) {
       // Sender column
       const senderCell = document.createElement('td');
       senderCell.style.width = '25%';
-      senderCell.textContent = email.sender;
+      const senderBold = document.createElement('b');
+      senderBold.textContent = email.sender;
+      senderCell.appendChild(senderBold);
       row.appendChild(senderCell);
 
       // Subject column
@@ -95,6 +99,8 @@ function load_mailbox(mailbox) {
       table.appendChild(row);
       table.addEventListener('click', function() {
         console.log('This element has been clicked!')
+        //table.style.backgroundColor = 'white';
+        mail_details(email);
       });
       container.appendChild(table);
     });
@@ -104,4 +110,37 @@ function load_mailbox(mailbox) {
     console.error('Error', error);
   });
   return false;
+}
+
+function mail_details(email) {
+  document.querySelector('#email-details').style.display = 'block';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#emails-view').style.display = 'none';
+
+  const main_container = document.querySelector('#email-details');
+  main_container.innerHTML = '';
+
+  const subject = document.createElement('h3');
+  subject.textContent = `${email.subject}`;
+  main_container.appendChild(subject);
+
+  let detailsDiv = document.createElement('div');
+  detailsDiv.innerHTML  = `<b>From:</b> ${email.sender}`;
+  main_container.appendChild(detailsDiv);
+
+  detailsDiv = document.createElement('div');
+  detailsDiv.innerHTML  = `<b>To:</b> ${email.recipients}`;
+  main_container.appendChild(detailsDiv);
+
+  detailsDiv = document.createElement('div');
+  detailsDiv.innerHTML  = `<b>Timestamp:</b> ${email.timestamp}`;
+  main_container.appendChild(detailsDiv);
+
+  const hr = document.createElement('hr'); // Dodaj element <hr> między Subject a Body
+  main_container.appendChild(hr);
+
+  detailsDiv = document.createElement('div');
+  detailsDiv.textContent = `${email.body}`;
+  main_container.appendChild(detailsDiv);
+
 }
