@@ -109,7 +109,7 @@ function load_mailbox(mailbox) {
           })
         })
 
-        mail_details(email);
+        mail_details(email, mailbox);
       });
       if(email.read === true){
         table.style.backgroundColor = 'white';
@@ -126,7 +126,7 @@ function load_mailbox(mailbox) {
   return false;
 }
 
-function mail_details(email) {
+function mail_details(email, mailbox) {
   document.querySelector('#email-details').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#emails-view').style.display = 'none';
@@ -149,6 +149,33 @@ function mail_details(email) {
   detailsDiv = document.createElement('div');
   detailsDiv.innerHTML  = `<b>Timestamp:</b> ${email.timestamp}`;
   main_container.appendChild(detailsDiv);
+
+  const archive_button = document.createElement('button');
+  let text = "";
+  if(email.archived){
+    text = 'Disarchive';
+    archive_button.style.backgroundColor = 'rgb(93, 192, 93)';
+  } else {
+    text = 'Archive';
+    archive_button.style.backgroundColor = 'rgb(247, 78, 78)';
+  }
+   
+  archive_button.textContent = text;
+  archive_button.style.marginTop = '10px';
+
+  archive_button.addEventListener('click', function() {
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+          archived: !email.archived
+      })
+    })
+    .then(updatedEmail => {
+      email.archived = updatedEmail.archived;
+      load_mailbox(mailbox);
+    })
+  })
+  main_container.appendChild(archive_button);
 
   const hr = document.createElement('hr');
   main_container.appendChild(hr);
