@@ -61,49 +61,19 @@ function load_mailbox(mailbox) {
   const mailboxHeader = document.createElement('h3');
   mailboxHeader.textContent = `${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`;
    
-  //conditions
-  /*
-    sent -> email.sender = user
-    archive -> email.archive = true
-    inbox -> email.archive = false
-  */
-  
   const container = document.querySelector('#emails-view');
   container.innerHTML = '';
   container.appendChild(mailboxHeader);
-  
-  fetch('/emails/inbox')
+
+  fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
     
-    //select emails in a given category
-    let selected_emails = [];
-    let not_archived_emails = [];
-    if (mailbox === 'sent'){
-      emails.forEach(email => {
-        console.log(`sender: ${email.sender}  user: ${document.querySelector('#user_email').value}`)
-        if(email.sender === document.querySelector('#user_email').value){
-          selected_emails.push(email);
-        }
-      })
-    } else{
-      emails.forEach(email => {
-        if(email.archived){
-          selected_emails.push(email);
-        }
-        else{
-          not_archived_emails.push(email);
-        }
-      })
-      if (mailbox != 'archive') {
-        selected_emails = not_archived_emails;
-      }
-    } 
-    
-
     // Print emails
-    console.log(selected_emails);
-    selected_emails.forEach(email => {
+
+    console.log(emails);
+    //selected_emails.forEach(email => {
+    emails.forEach(email => {
       const table = document.createElement('table');
       table.classList.add('email-item'); // Adding class do every email-item
 
@@ -132,8 +102,6 @@ function load_mailbox(mailbox) {
       table.appendChild(row);
       table.addEventListener('click', function() {
         console.log('This element has been clicked!')
-        //table.style.backgroundColor = 'white';
-
         fetch(`/emails/${email.id}`, {
           method: 'PUT',
           body: JSON.stringify({
@@ -182,7 +150,7 @@ function mail_details(email) {
   detailsDiv.innerHTML  = `<b>Timestamp:</b> ${email.timestamp}`;
   main_container.appendChild(detailsDiv);
 
-  const hr = document.createElement('hr'); // Dodaj element <hr> między Subject a Body
+  const hr = document.createElement('hr');
   main_container.appendChild(hr);
 
   detailsDiv = document.createElement('div');
