@@ -60,6 +60,13 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   const mailboxHeader = document.createElement('h3');
   mailboxHeader.textContent = `${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`;
+   
+  //conditions
+  /*
+    sent -> email.sender = user
+    archive -> email.archive = true
+    inbox -> email.archive = false
+  */
   
   const container = document.querySelector('#emails-view');
   container.innerHTML = '';
@@ -68,9 +75,35 @@ function load_mailbox(mailbox) {
   fetch('/emails/inbox')
   .then(response => response.json())
   .then(emails => {
+    
+    //select emails in a given category
+    let selected_emails = [];
+    let not_archived_emails = [];
+    if (mailbox === 'sent'){
+      emails.forEach(email => {
+        console.log(`sender: ${email.sender}  user: ${document.querySelector('#user_email').value}`)
+        if(email.sender === document.querySelector('#user_email').value){
+          selected_emails.push(email);
+        }
+      })
+    } else{
+      emails.forEach(email => {
+        if(email.archived){
+          selected_emails.push(email);
+        }
+        else{
+          not_archived_emails.push(email);
+        }
+      })
+      if (mailbox != 'archive') {
+        selected_emails = not_archived_emails;
+      }
+    } 
+    
+
     // Print emails
-    console.log(emails);
-    emails.forEach(email => {
+    console.log(selected_emails);
+    selected_emails.forEach(email => {
       const table = document.createElement('table');
       table.classList.add('email-item'); // Adding class do every email-item
 
@@ -100,8 +133,21 @@ function load_mailbox(mailbox) {
       table.addEventListener('click', function() {
         console.log('This element has been clicked!')
         //table.style.backgroundColor = 'white';
+
+        fetch(`/emails/${email.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+              read: true
+          })
+        })
+
         mail_details(email);
       });
+      if(email.read === true){
+        table.style.backgroundColor = 'white';
+      }else{
+        table.style.backgroundColor = '#e3dfdf';
+      }
       container.appendChild(table);
     });
 
