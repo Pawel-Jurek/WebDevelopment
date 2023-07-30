@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(replying_email = None) {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -18,9 +18,21 @@ function compose_email() {
   document.querySelector('#email-details').style.display = 'none';
 
   // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+  if(replying_email){
+    document.querySelector('#compose-recipients').value = replying_email.sender;
+    if(replying_email.subject.startsWith("Re:")){
+      document.querySelector('#compose-subject').value = replying_email.subject;
+    } else{
+      document.querySelector('#compose-subject').value = `Re: ${replying_email.subject}`;
+    }
+    document.querySelector('#compose-body').value = `On ${replying_email.timestamp} ${replying_email.sender} wrote: \n'${replying_email.body}'\n\n`;
+    document.querySelector('#compose-recipients').disabled = true;
+    document.querySelector('#compose-subject').disabled = true;
+  }else{
+    document.querySelector('#compose-recipients').value = '';
+    document.querySelector('#compose-subject').value = '';
+    document.querySelector('#compose-body').value = '';
+  }
 
   document.querySelector('#compose-form').onsubmit = () => {
     const recipients = document.querySelector('#compose-recipients').value;
@@ -176,6 +188,19 @@ function mail_details(email, mailbox) {
     })
   })
   main_container.appendChild(archive_button);
+
+  if(mailbox !== 'sent')
+  {
+    const reply_button = document.createElement('button');
+    reply_button.style.backgroundColor = '#f2eabb';
+    reply_button.textContent = "Reply";
+    reply_button.style.marginLeft = '5px';
+    reply_button.addEventListener('click', function() {
+      compose_email(email);
+    })
+    main_container.appendChild(reply_button);
+  }
+  
 
   const hr = document.createElement('hr');
   main_container.appendChild(hr);
