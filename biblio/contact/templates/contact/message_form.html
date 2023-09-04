@@ -1,0 +1,12 @@
+{% extends "shelf/layout.html" %}
+
+{% block body %}
+    <h1>Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
