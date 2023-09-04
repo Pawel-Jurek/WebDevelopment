@@ -1,0 +1,9 @@
+{% extends "shelf/layout.html" %}
+
+{% block body %}
+    <h1>Author page:</h1>
+    {{ object.first_name }} {{ object.last_name }}
+    <div>
+        <a href="{% url 'authors' %}">Return to Author list</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "shelf/layout.html" %}
+
+{% block body %}
+    <h1>Authors</h1>
+    <ul>
+        {% for author in object_list %}
+        <li> <a href="{% url 'author_detail' author.id %}">{{author.first_name}} {{author.last_name}}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
