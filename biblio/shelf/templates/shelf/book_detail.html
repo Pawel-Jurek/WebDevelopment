@@ -1,0 +1,9 @@
+{% extends "shelf/layout.html" %}
+
+{% block body %}
+    <h1>{{object.title}}</h1>
+    
+    <div>
+        <a href="{% url 'books' %}">Return to Book list</a>
+    </div>
+{% endblock %}
