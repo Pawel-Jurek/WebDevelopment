@@ -1,7 +1,11 @@
-{% extends "shelf/layout.html" %}
+{% extends "layout.html" %}
+{% load shelf_tags %}
 
 {% block body %}
     <h1>{{object.title}}</h1>
+
+    <h2>Wydania:</h2>
+    {% show_editions object %}
     
     <div>
         <a href="{% url 'books' %}">Return to Book list</a>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 
 # Create your models here.
 
@@ -36,9 +37,12 @@ class Book(models.Model):
     def __str__(self):
         return self.title
     
+    def get_absolute_url(self):
+        return reverse_lazy('book_detail', kwargs={'pk': self.id})
+    
 
 class BookEdition(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='editions')
     isbn = models.CharField(max_length=17, blank=True)
     date = models.DateField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)

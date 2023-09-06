@@ -1,10 +1,10 @@
-{% extends "shelf/layout.html" %}
+{% extends "layout.html" %}
 
 {% block body %}
     <ul>
         {% for book in object_list %}
             <li>
-                <a href="{% url 'book_datail' book.id %}">{{book.title}}</a> - 
+                <a href="{{ book.get_absolute_url }}">{{book.title}}</a> - 
                 {% for author in book.authors.all %}
                     <a href="{% url 'author_detail' author.id %}">{{author.first_name}} {{author.last_name}}</a>
                     {% if not forloop.last %}, {% endif %}

@@ -1,0 +1,6 @@
+{% load shelf_tags %}
+<ul>
+    {% for edition in editions %}
+        <li> {{edition.date|pub_year}}  - {{edition.publisher.name}}</li>    <!-- to samo robi wbudowany filtr {{edition.date|date:"Y"}}-->
+    {% endfor %}
+</ul>
