@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.timezone import now
-
+from django.conf import settings
 from shelf.models import BookItem
 
 
 class Rental(models.Model):
-    who = models.ForeignKey(User, on_delete=models.CASCADE)
+    who = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     what = models.ForeignKey(BookItem, on_delete=models.CASCADE)
     when = models.DateTimeField(default=now)
     returned = models.DateTimeField(null=True, blank=True)

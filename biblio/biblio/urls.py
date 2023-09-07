@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("shelf/", include("shelf.urls")),
     path("contact/", include("contact.urls")),
+    path('accounts/', include('allauth.urls')),
     path("", index_view, name="main_page"),
 ]
