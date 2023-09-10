@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% load birthday_tags %}
+{% load static %}
+
+{% block body %}
+    <div class="content">
+        <h1>Current Birthday</h1>
+        {% show_birthdays_people %}
+    </div>  
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'choco_tick.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}   
+    <div style="margin: 10px;">
+        <h3>Here you can choose excel file to update or create your people base</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="custom-file" style="margin-bottom: 5px; margin-top: 30px;">
+                <input type="file" name="excel_file" accept=".xlsx" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+                <button style="margin-top: 5px;" type="submit" class="btn btn-secondary btn-lg btn-block">Import from Excel</button>
+            </div>
+            
+        </form>
+    </div>
+{% endblock %}

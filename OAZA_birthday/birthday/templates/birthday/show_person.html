@@ -1,0 +1,16 @@
+<li class="list-group-item {%if person.chocolate_received %}li-received{% else %}li-not-received{% endif %}" id="person-field{{person.id}}"> 
+    <div class="container" style="margin: 0px">
+        <div class="row align-items-center" style="text-align: left;">  
+            <div class="col-4">{{forloop.counter}}. {{person}}</div>
+            <div class="col-3">{{person.birthday }}</div>
+            <div class="col-4">{{person.group}}</div>       
+            <div class="col-1">
+                {% csrf_token %}
+                <button person-id="{{person.id}}" type="submit" class="tick_button {% if person.chocolate_received %}btn btn-danger{% else %}btn btn-success{% endif %}" style="width: 100px;"> 
+                    {% if person.chocolate_received %} Untick {% else %} Tick {% endif %}
+                </button>
+            </div>
+            
+        </div>
+    </div>        
+</li>

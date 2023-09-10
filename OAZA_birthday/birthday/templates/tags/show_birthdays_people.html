@@ -1,0 +1,7 @@
+{% load birthday_tags %}
+
+<ul class="list-group">
+    {% for person in people %}
+        {% include 'birthday/show_person.html' %}
+    {% endfor %}
+</ul>
