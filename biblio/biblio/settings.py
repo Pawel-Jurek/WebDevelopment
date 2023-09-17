@@ -63,8 +63,9 @@ class Production(Configuration):
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
-        'django.contrib.staticfiles',
-        
+        'django.contrib.staticfiles',      
+        'bootstrap5',
+
         ####
         'allauth',
         'allauth.account',
@@ -162,14 +163,22 @@ class Production(Configuration):
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-    STATIC_URL = 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_URL = '/static/'
+    
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+
+    STATICFILES_DIRS = [
+        ("media", MEDIA_ROOT),
+        ]
 
     # Default primary key field type
     # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-    LOGIN_URL = 'main_page'
+    LOGIN_REDIRECT_URL = 'main_page'
 
 class Dev(Production):
     DEBUG = True
