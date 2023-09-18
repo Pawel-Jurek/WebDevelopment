@@ -12,3 +12,8 @@ class Rental(models.Model):
 
     def __str__(self):
         return f'{self.who}, {self.what}, {self.when}'
+    
+    class Meta:
+        permissions = (
+            ('can_rent',' Can rent a book'),
+        )

@@ -2,5 +2,8 @@
 
 {% block body %}
     <h1>Main Page</h1>
-    <img src="/media/avatars/shark.jpg" alt="shark">
+    <ul>
+        <li><a href="{% url 'books' %}">Public list (books)</a></li>
+        <li><a href="{% url 'authors' %}">Secret list (authors)</a></li>
+    </ul>
 {% endblock %}
