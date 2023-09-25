@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Dishes</h1>
+    <div class="container">
+        <div class="row">
+            {% for dish in object_list %}
+                <div class="col-3">
+                    <div class="card mb-3">
+                        <img src="{{ dish.img.url }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{dish.name}} </h5>
+                            <p class="card-text">{{dish.calculte_price}}</p>
+                        </div>       
+                    </div>  
+                </div>
+            {% endfor %}
+        </div>
+      </div>
+        
+{% endblock %}

@@ -4,7 +4,6 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
 from .models import Author, Book
 
 class MainPageView(TemplateView):

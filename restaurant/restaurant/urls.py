@@ -1,5 +1,5 @@
 """
-URL configuration for biblio project.
+URL configuration for restaurant project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,25 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.contrib import admin
+from django.urls import path, include
+from kitchen.views import index_view
 from django.conf import settings
-from django.urls import include, path
 from django.conf.urls.static import static
-from .api_v1 import router as v1_router
-
-from shelf.views import index_view
-from rest_framework import urls as rf_urls
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("shelf/", include("shelf.urls")),
-    path("contact/", include("contact.urls")),
-    path('accounts/', include('allauth.urls')),
-    path("", index_view, name="main_page"),
-    path('rent/', include('rental.urls')),
-    path('api/v1/', include(v1_router.urls), name='api_v1'),
-    path('api_auth/', include(rf_urls)),
-
+    path('', index_view, name="main_page"),
+    path('dishes/', include('kitchen.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
