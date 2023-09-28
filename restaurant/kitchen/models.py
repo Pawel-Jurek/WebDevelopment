@@ -8,11 +8,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name 
+    
+
+DISH_CATEGORIES = (
+    ('breakfast', 'śniadanie'),
+    ('main_course', 'danie_główne'),
+    ('dessert', 'deser'),
+    ('drink', 'napój')
+)
+
 
 class Dish(models.Model):
     name = models.CharField(max_length=50)
     img = models.ImageField(upload_to='imgs/', blank=True, null=True)
-    
+    category = models.CharField(max_length=15, choices=DISH_CATEGORIES)
+    price = models.FloatField()
+
     def calculate_price(self):
         total_price = 0.0
 
@@ -26,11 +37,15 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = 'Dishes'
+
 
 class Ingredient(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE, related_name="ingredients")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.FloatField(default=0)
+    amount = models.FloatField()
 
     def __str__(self):
         if self.product.pieced:
