@@ -6,7 +6,7 @@ from orders.models import Order
 
 
 class User(AbstractUser):
-    shoping_cart = models.ManyToManyField(Order, related_name='shoping_cart' )
+    shopping_cart = models.ManyToManyField(Order, related_name='shoping_cart' )
     phone = models.CharField(max_length=15)
 
     def __str__(self):
