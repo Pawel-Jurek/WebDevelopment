@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(response => {
                 console.log('response', response);
-                var badgeSpan = document.querySelector(".badge");
+                var badgeSpan = document.querySelector(".cart");
                 if(badgeSpan){
                     badgeSpan.innerText = response.new_items;
                 } else {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     spanElement.style.backgroundColor = "brown";
                     spanElement.innerText = response.new_items;
 
-                    var container = document.querySelector('#cart');
+                    var container = document.getElementById("badge"); 
                     container.appendChild(spanElement);
                 }          
             })

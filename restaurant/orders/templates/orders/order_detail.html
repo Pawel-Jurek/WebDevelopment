@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <ul>
+        {% for dish in object.dishes.all %}
+        <li>{{dish}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
