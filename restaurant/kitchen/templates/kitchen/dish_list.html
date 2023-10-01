@@ -5,33 +5,36 @@
     <h1>Dishes</h1>
     <div id="card-container">
         {% for dish in object_list %}
-            <div class="card mb-3 h-100 clickable-card" role="button">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="card-td">
-                                <div class="card-img-top text-center">
-                                    <img src="{{ dish.img.url }}" class="dish-photo"  alt="{{ dish.name }} photo">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ dish.name }}</h5>
-                                    <p class="card-text">{{ dish.price|floatformat:2 }} zł</p>
-                                </div>
-                            </td>
-                            <td class="collapse-td">
-                                <div id="collapse{{ forloop.counter }}" class="collapse">
-                                    <h3>Składniki:</h3>
-                                    <ul>                                        
-                                        {% for product in dish.ingredients.all %}
-                                            <li>{{ product }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn btn-success" style="width: 100%;">Dodaj do koszyka</button>
+            <div class="card mb-3 h-100 clickable-card">
+                <div class="toggle-part" role="button">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="card-td">
+                                    <div class="card-img-top text-center">
+                                        <img src="{{ dish.img.url }}" class="dish-photo" alt="{{ dish.name }}">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ dish.name }}</h5>
+                                        <p class="card-text">{{ dish.price|floatformat:2 }} zł</p>
+                                    </div>
+                                </td>
+                                <td class="collapse-td">
+                                    <div id="collapse{{ forloop.counter }}" class="collapse" style="padding: 10px;">
+                                        <h3>Składniki:</h3>
+                                        <ul>                                        
+                                            {% for product in dish.ingredients.all %}
+                                                <li>{{ product }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% csrf_token %}
+                <button class="btn btn-success add-to-cart" data-id="{{ dish.id }}" style="width: 100%;">Dodaj do koszyka</button>
             </div>
         {% endfor %}
     </div>
@@ -40,4 +43,5 @@
 
 {% block script %}
     <script src="{% static 'toggle_dish.js' %}"></script>
+    <script src="{% static 'add_to_cart.js' %}"></script>
 {% endblock %}
