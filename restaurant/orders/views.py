@@ -13,5 +13,5 @@ class ShoppingCart(DetailView):
         user = self.request.user
         if user.is_authenticated:
             user.new_orders = 0
-            user.save()  # Zapisz zmiany w bazie danych
+            user.save()
         return context

@@ -33,3 +33,21 @@
     text-align: left;
     vertical-align: top;
 }
+
+#carousel-div{
+    width: calc(100% - 400px);
+}
+
+.carousel-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.carousel-content img {
+    max-width: 100%;
+    height: auto;
+}

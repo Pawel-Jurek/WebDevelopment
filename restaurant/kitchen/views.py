@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Dish
 from users.models import User
-from orders.models import Order
+from orders.models import OrderItem
 
 # Create your views here.
 
@@ -27,10 +27,14 @@ def add_to_cart(request, dish_id):
             user = User.objects.get(username=request.user.username)
             user.new_orders += 1
 
-            order = user.get_or_create_order() 
-            print(order)
-            order.dishes.add(dish)
-            order.save()
+            order = user.get_or_create_order()
+
+            order_item, created = OrderItem.objects.get_or_create(order=order, dish=dish)
+
+            if not created:
+                order_item.quantity += 1
+                order_item.save()
+
             user.save()
 
             return JsonResponse({

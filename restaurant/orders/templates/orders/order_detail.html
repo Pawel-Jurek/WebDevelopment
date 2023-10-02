@@ -1,9 +1,44 @@
 {% extends "layout.html" %}
+{% load static %}
+{% load order_tags %}
 
 {% block body %}
-    <ul>
-        {% for dish in object.dishes.all %}
-        <li>{{dish}}</li>
-        {% endfor %}
-    </ul>
+    {% if object.orderItems %}
+    <div id="carousel-div">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+            <div class="carousel-indicators">
+                {% for item in object.orderItems.all %}
+                    {% if forloop.counter == 1 %}
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    {% else %}
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to='{{forloop.counter|add:"-1"}}' aria-label="Slide {{forloop.counter}}"></button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for item in object.orderItems.all %}
+                <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+                    <div class="carousel-content text-center">
+                        <img src="{{ item.dish.img.url }}" alt="{{ item.dish.name }}">
+                        <h5>{{ item.dish.name }} x{{item.quantity}}</h5>
+                        {% show_price item %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+        </div>
+    </div>
+    {% else %}
+        <h2>Twój koszyk jest pusty</h2>
+    {% endif %}
 {% endblock %}
