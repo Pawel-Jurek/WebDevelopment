@@ -35,7 +35,7 @@
 }
 
 #carousel-div{
-    width: calc(100% - 400px);
+    width: calc(80%);
 }
 
 .carousel-item {
@@ -50,4 +50,24 @@
 .carousel-content img {
     max-width: 100%;
     height: auto;
+}
+
+.carousel-dish{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.quantity-container {
+    margin-top: 15px;
+    display: flex;
+}
+
+.quantity-label {
+    margin-right: 10px;
 }
