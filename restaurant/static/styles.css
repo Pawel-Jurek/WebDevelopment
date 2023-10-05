@@ -36,6 +36,10 @@
 
 #carousel-div{
     width: calc(80%);
+    display: flex;
+    justify-content: center; /* Wyśrodkowanie w poziomie */
+    align-items: center; /* Wyśrodkowanie w pionie */
+    height: 100%;
 }
 
 #orderList{
@@ -78,4 +82,15 @@
 
 .quantity-label {
     margin-right: 10px;
+}
+
+#nav_main{
+    min-height: calc(100vh - 200px);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
