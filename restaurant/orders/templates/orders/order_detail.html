@@ -4,64 +4,85 @@
 
 {% block body %}
     {% if object.orderItems %}
-    <div id="carousel-div">
-        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
-            <div class="carousel-indicators">
-                {% for item in object.orderItems.all %}
-                    {% if forloop.counter == 1 %}
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    {% else %}
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to='{{forloop.counter|add:"-1"}}' aria-label="Slide {{forloop.counter}}"></button>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="carousel-inner">
-                {% for item in object.orderItems.all %}
-                <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-                    <div class="carousel-content text-center">
-                        <div class="carousel-dish">
-                            <table style="margin-left: 30px; margin-right: 30px;">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ item.dish.img.url }}" alt="{{ item.dish.name }}">
-                                            <h5>{{ item.dish.name }}</h5>
-                                        </td>
-                                        <td style="padding-left: 50px;">
-                                            {% csrf_token %}
-                                            <svg class="increase-amount" data-order="{{object.pk}}" data-quantity="{{item.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green" class="bi bi-plus-square" viewBox="0 0 16 16">
-                                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                            </svg>
-                                            <svg class="decrease-amount" data-order="{{object.pk}}" data-quantity="{{item.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-dash-square" viewBox="0 0 16 16">
-                                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                                            </svg>
-                                            <div class="quantity-container">
-                                                <p class="quantity-label">Ilość: </p>
-                                                <p class="quantity" id="quantity{{ item.pk }}">{{ item.quantity }}</p>
-                                            </div>
-                                            <hr>
-                                            {% show_price item %}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <div id="main_container">
+        <div id="carousel-div">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+                <div class="carousel-indicators">
+                    {% for item in object.orderItems.all %}
+                        {% if forloop.counter == 1 %}
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        {% else %}
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to='{{forloop.counter|add:"-1"}}' aria-label="Slide {{forloop.counter}}"></button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for item in object.orderItems.all %}
+                    <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+                        <div class="carousel-content text-center">
+                            <div class="carousel-dish">
+                                <table style="margin-left: 30px; margin-right: 30px;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img src="{{ item.dish.img.url }}" alt="{{ item.dish.name }}">
+                                                <h5>{{ item.dish.name }}</h5>
+                                            </td>
+                                            <td style="padding-left: 50px;">
+                                                {% csrf_token %}
+                                                <svg class="increase-amount" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                                </svg>
+                                                <svg class="decrease-amount" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-dash-square" viewBox="0 0 16 16">
+                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                                </svg>
+                                                <div class="quantity-container">
+                                                    <p class="quantity-label">Ilość: </p>
+                                                    <p class="quantity" id="quantity{{ item.dish.pk }}">{{ item.quantity }}</p>
+                                                </div>
+                                                <hr>
+                                                {% show_price item %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            
+                
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div id="orderList" class="overflow-y-auto">
+            <h2>Twoja lista zakupów:</h2>
+            <ul class="list-group">              
+                {% for item in object.orderItems.all %}
+                    <li class="list-group-item">
+                        <a>{{item.dish}}</a>
+                        <a id="dish-quantity-item{{item.dish.pk}}"> x{{item.quantity}}</a>
+                        <a>{% show_price item %}</a>
+                    </li>
+                {% endfor %}
+                <li class="list-group-item" style="background-color: rgb(241, 234, 135);">
+                    <a>W sumie:</a>
+                    <a id="total_sum">{{object.calculate_total_price}}</a>
+                    <a>zł</a>
+                    <button class="btn btn-success" style="margin-top: 10px; width: 100%;">Zamów</button>
+                </li>
+            </ul>
+            
         </div>
     </div>
     {% else %}

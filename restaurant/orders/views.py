@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 from kitchen.models import Dish
+from kitchen.views import add_to_cart
 
 # Create your views here.
 from .models import Order, OrderItem
@@ -25,12 +26,17 @@ def update_dish(request, orderId, dishId, quantity):
     if request.method == 'PUT':
         try:
             order_item = OrderItem.objects.get(order=orderId, dish=dishId)
-            order_item.quantity = quantity
-            order_item.save()
+            if(quantity == 0):
+                order_item.delete()
+            else:            
+                order_item.quantity = quantity
+                order_item.save()
 
             return JsonResponse({
                 "status": 'success'
             })
+        except OrderItem.DoesNotExist:
+            add_to_cart(dishId)
         except Exception as e: 
             return JsonResponse({
                 "status": f'error: {str(e)}'

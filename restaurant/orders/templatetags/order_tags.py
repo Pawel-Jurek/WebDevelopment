@@ -6,5 +6,5 @@ register = Library()
 def show_price(item):
     return {
         'total_price': f'{round(item.dish.price * item.quantity, 2):.2f}',
-        'id': item.pk
+        'id': item.dish.pk
             }

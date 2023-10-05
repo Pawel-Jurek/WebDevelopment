@@ -38,6 +38,14 @@
     width: calc(80%);
 }
 
+#orderList{
+    width: calc(20%);
+}
+
+#main_container {
+    display: flex;
+}
+
 .carousel-item {
     display: flex;
     align-items: center;

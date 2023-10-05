@@ -5,6 +5,9 @@ from kitchen.models import Dish
 class Order(models.Model):
     active = models.BooleanField(default=True)
 
+    def calculate_total_price(self):
+        return f'{sum(item.quantity * item.dish.price for item in self.orderItems.all()):.2f}'
+
     def __str__(self):
         return f"{self.pk}. {self.orderItems}"
 
