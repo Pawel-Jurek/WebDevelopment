@@ -3,19 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     toggle_parts.forEach(toggle_part => {
         const card = toggle_part.closest('.card');
+        const collapse = card.querySelector('.collapse');
 
-        toggle_part.addEventListener('click', function(){
-            const collapse = card.querySelector('.collapse');
-            
-            if(card.classList.contains('opened')){
-                card.classList.remove('opened');
+        toggle_part.addEventListener('click', function(){  
+            if(collapse.classList.contains('show')){
                 collapse.classList.remove('show');
                 card.style.width = '300px';
             } else {
-                card.classList.add('opened');
-                collapse.classList.add('show');
                 card.style.width = '600px';
+                setTimeout(function() {
+                    collapse.classList.add('show');
+                }, 150);
             }
         });
     });
 });
+
