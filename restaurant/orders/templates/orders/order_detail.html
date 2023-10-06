@@ -79,7 +79,7 @@
                     <a>W sumie:</a>
                     <a id="total_sum">{{object.calculate_total_price}}</a>
                     <a>zł</a>
-                    <button class="btn btn-success" style="margin-top: 10px; width: 100%;">Zamów</button>
+                    <button class="btn btn-success" id="confirm_order" style="margin-top: 10px; width: 100%;">Zamów</button>
                 </li>
             </ul>
             
@@ -92,4 +92,5 @@
 
 {% block script %}
     <script src="{% static 'modify_dish_quantity.js' %}"></script>
+    <script src="{% static 'confirm_order.js' %}"></script>
 {% endblock %}
