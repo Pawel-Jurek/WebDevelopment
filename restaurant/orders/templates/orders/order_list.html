@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% load static %}
+{% load order_tags %}
+
+{% block body %}
+    <div style="padding: 20px;">
+        {% if user.is_owner %}
+            <h2>Całkowity przychód: {{total_income}}zł</h2>
+            <div id="card-container">
+                {% for order in object_list %}
+                <div class="card text-bg-light mb-3" style="max-width: 12rem;">
+                    <div class="card-header">Zamówienie {{order.pk}}</div>
+                    <div class="card-body">
+                        <div style="color: black; padding: 5px;">
+                            <h5 class="card-title">Przychód</h5>
+                            <p class="card-text">{{order.calculate_total_price}}zł</p>
+                        </div>
+                        <div style="color: red; padding: 5px;">
+                            <h5 class="card-title">Koszt</h5>
+                            <p class="card-text">{{order.calculate_costs}}zł</p>
+                        </div>
+                        <div style="color: green; padding: 5px;">
+                            <h5 class="card-title">Zysk</h5>
+                            <p class="card-text">{{order.calculate_profit}}zł</p>
+                        </div>  
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>Nie masz tutaj dostępu:(</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

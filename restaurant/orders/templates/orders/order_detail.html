@@ -3,7 +3,7 @@
 {% load order_tags %}
 
 {% block body %}
-    {% if object.orderItems %}
+    {% if object.orderItems.all %}
     <div id="main_container">
         <div id="carousel-div">
             <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
@@ -20,34 +20,30 @@
                     {% for item in object.orderItems.all %}
                     <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
                         <div class="carousel-content text-center">
-                            <div class="carousel-dish">
-                                <table style="margin-left: 30px; margin-right: 30px;">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ item.dish.img.url }}" alt="{{ item.dish.name }}">
-                                                <h5>{{ item.dish.name }}</h5>
-                                            </td>
-                                            <td style="padding-left: 50px;">
-                                                {% csrf_token %}
-                                                <svg class="increase-amount" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green" class="bi bi-plus-square" viewBox="0 0 16 16">
-                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                                </svg>
-                                                <svg class="decrease-amount" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-dash-square" viewBox="0 0 16 16">
-                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                                                </svg>
-                                                <div class="quantity-container">
-                                                    <p class="quantity-label">Ilość: </p>
-                                                    <p class="quantity" id="quantity{{ item.dish.pk }}">{{ item.quantity }}</p>
-                                                </div>
-                                                <hr>
-                                                {% show_price item %}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="carousel-dish" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                                <div>
+                                    <img src="{{ item.dish.img.url }}" class="rounded" alt="{{ item.dish.name }}">
+                                    <h5 style="margin-top: 20px;">{{ item.dish.name }}</h5>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    {% csrf_token %}
+                                    <svg class="increase-amount" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                    <div class="quantity-container" style="display: flex; margin-left: 25px; align-items: center;">
+                                        <p class="quantity-label">Ilość: </p>
+                                        <p class="quantity" id="quantity{{ item.dish.pk }}">{{ item.quantity }}</p>
+                                    </div>
+                                    <svg class="decrease-amount" style="margin-left: 25px;" data-order="{{object.pk}}" data-dish_id="{{item.dish.pk}}" data-price="{{item.dish.price}}" role="button" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-dash-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                    </svg>
+                                </div>
+                                <hr>
+                                <div style="font-size: large;">
+                                    {% show_price item %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -79,18 +75,38 @@
                     <a>W sumie:</a>
                     <a id="total_sum">{{object.calculate_total_price}}</a>
                     <a>zł</a>
-                    <button class="btn btn-success" id="confirm_order" style="margin-top: 10px; width: 100%;">Zamów</button>
+                    {% csrf_token %}
+                    <button class="btn btn-success" id="confirm_order" data-id="{{object.pk}}" style="margin-top: 10px; width: 100%;">Zamów</button>
                 </li>
             </ul>
             
         </div>
     </div>
+
+    <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="myModalLabel">Status twojego zamówienia</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Zamówienie zostało przyjęte to realizacji :)
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     {% else %}
         <h2>Twój koszyk jest pusty</h2>
     {% endif %}
 {% endblock %}
 
 {% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'modify_dish_quantity.js' %}"></script>
     <script src="{% static 'confirm_order.js' %}"></script>
 {% endblock %}

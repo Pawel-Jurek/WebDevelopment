@@ -7,9 +7,15 @@ class Order(models.Model):
 
     def calculate_total_price(self):
         return f'{sum(item.quantity * item.dish.price for item in self.orderItems.all()):.2f}'
+    
+    def calculate_costs(self):
+        return f'{sum(item.quantity * item.dish.calculate_price() for item in self.orderItems.all()):.2f}'
+    
+    def calculate_profit(self):
+        return f'{float(self.calculate_total_price()) - float(self.calculate_costs()):.2f}'
 
     def __str__(self):
-        return f"{self.pk}. {self.orderItems}"
+        return f"{self.pk}. {self.orderItems.all()}"
 
 
 class OrderItem(models.Model):

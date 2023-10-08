@@ -22,7 +22,7 @@ class UserAdmin(UserAdmin):
             },
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
-        (_("Additional info"), {'fields': ('orders', 'new_items', 'phone')})
+        (_("Additional info"), {'fields': ('orders', 'new_orders', 'phone', 'is_owner')})
     )
 
 admin.site.register(User, UserAdmin)
