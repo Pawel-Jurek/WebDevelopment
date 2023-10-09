@@ -11,21 +11,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     'X-CSRFToken': csrfToken
                 },
             })
-            .then(response => response.json())
             .then(response => {
-                console.log('response', response);
-                var badgeSpan = document.querySelector(".badge");
-                if(badgeSpan){
-                    badgeSpan.innerText = response.new_items;
+                if (response.ok) {
+                    return response.text();
                 } else {
-                    var spanElement = document.createElement("span");
-                    spanElement.classList.add("badge", "rounded-pill");
-                    spanElement.style.backgroundColor = "brown";
-                    spanElement.innerText = response.new_items;
+                    console.error('Response is not OK');
+                }
+            })
+            .then(text => {
+                if (text && text.indexOf('DOCTYPE') === -1) {
+                    return JSON.parse(text);
+                } else {
+                    window.location.href = '/accounts/login/';
+                }
+            })
+            .then(response => {
+                if (response) {
+                    console.log('response', response);
+                    var badgeSpan = document.querySelector(".badge");
+                    if(badgeSpan){
+                        badgeSpan.innerText = response.new_items;
+                    } else {
+                        var spanElement = document.createElement("span");
+                        spanElement.classList.add("badge", "rounded-pill");
+                        spanElement.style.backgroundColor = "brown";
+                        spanElement.innerText = response.new_items;
 
-                    var container = document.querySelector('#cart');
-                    container.appendChild(spanElement);
-                }          
+                        var container = document.querySelector('#cart');
+                        container.appendChild(spanElement);
+                    }
+                }
             })
             .catch(error => {
                 console.error('Error', error);
@@ -33,5 +48,4 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         })
     });
-
 })

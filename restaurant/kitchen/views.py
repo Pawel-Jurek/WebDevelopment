@@ -21,6 +21,7 @@ class DishesListView(ListView):
 
 @login_required
 def add_to_cart(request, dish_id):
+    print('\njesteśmy w funkcji Dodawania do koszyka')
     if request.method == "PUT":
         try:
             dish = Dish.objects.get(pk=dish_id)
@@ -39,11 +40,11 @@ def add_to_cart(request, dish_id):
 
             return JsonResponse({
                 "new_items": user.new_orders
-            })
+            }, status=200)
         except Exception as e: 
             return JsonResponse({
                 "error": str(e)
-            })
+            }, status=401 )
 
     return JsonResponse({
         "error": "PUT request required."
