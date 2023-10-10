@@ -19,7 +19,19 @@
             {% bootstrap_messages %}
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 10px; height: 66px;">
                 <a class="navbar-brand" href="{% url 'main_page' %}">Pawel's Restaurant</a>
-                <a class="navbar-brand" href="{% url 'kitchen:dishes' %}">Menu</a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Menu
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="{% url 'kitchen:dishes' %}">Wszystko</a></li>
+                        <hr><li><a class="dropdown-item" href="{% url 'kitchen:dishes_category' 'breakfast' %}">Śniadania</a></li>
+                        <li><a class="dropdown-item" href="{% url 'kitchen:dishes_category' 'main_course' %}">Dania główne</a></li>
+                        <li><a class="dropdown-item" href="{% url 'kitchen:dishes_category' 'dessert' %}">Desery</a></li>
+                        <li><a class="dropdown-item" href="{% url 'kitchen:dishes_category' 'drink' %}">Napoje</a></li>              
+                    </ul>
+                </div>
+
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
                         {% if user.is_owner %}

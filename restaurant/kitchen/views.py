@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.decorators import login_required
 
-from .models import Dish
+from .models import DISH_CATEGORIES, Dish
 from users.models import User
 from orders.models import OrderItem
 
@@ -18,10 +18,18 @@ index_view = MainPageView.as_view()
 class DishesListView(ListView):
     model = Dish
 
+    def get_queryset(self):
+        category = self.kwargs.get('category')
+        if category:
+            return Dish.objects.filter(category=category)
+        else:
+            return Dish.objects.all()
+    
+    
+        
 
 @login_required
 def add_to_cart(request, dish_id):
-    print('\njesteśmy w funkcji Dodawania do koszyka')
     if request.method == "PUT":
         try:
             dish = Dish.objects.get(pk=dish_id)
