@@ -13,10 +13,9 @@ function change_quantity(buttons, number){
         button.addEventListener('click', function(){
             const orderId = button.getAttribute('data-order');
             const dish_id = button.getAttribute('data-dish_id');
-            const dish_price = button.getAttribute('data-price');
-            console.log('dishId', dish_id);
+            const dish_price = parseInt(button.getAttribute('data-price'));   
             var quantity_p = document.querySelector(`#quantity${dish_id}`);
-            console.log('quantity', quantity_p.textContent);
+            
             prices = document.querySelectorAll(`.price${dish_id}`);
             var quantity = parseInt(quantity_p.textContent);
             quantity_in_order_p = document.querySelector(`#dish-quantity-item${dish_id}`);
@@ -27,6 +26,7 @@ function change_quantity(buttons, number){
                 quantity_p.textContent = quantity;
                 prices.forEach(price_p =>{
                     price_p.textContent = `${(dish_price*quantity).toFixed(2)} zł`;
+                    console.log('cena', price_p.textContent);
                 })
                 actual_price = parseInt(total_sum.textContent);
                 actual_price += number * dish_price;
