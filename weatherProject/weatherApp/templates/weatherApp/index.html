@@ -2,59 +2,63 @@
 <html lang="en">
 {% load static %}
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="{% static 'styles.css' %}" rel="stylesheet">
-    <title>Weather App </title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="{% static 'styles.css' %}" rel="stylesheet">
+  <title>Weather App</title>
+</head>
 
-  <body>
-    <div id="jumbotron" class="jumbotron" style="text-align: center; margin-top:50px">
-      <h1 class="display-5">Weather Desktop App </h1>
-      <h5>Stay up to date with the current weather</h5>
+<body>
+  <div id="jumbotron" class="jumbotron" style="text-align: center; margin-top: 50px">
+    <h1 class="display-5">Weather Desktop App</h1>
+    <h5>Stay up to date with the current weather</h5>
 
-      <img src="{% static 'images/weather.png' %}" class="image" style="width:100px; margin-bottom:50px; margin-top: 5px;">
-    </div>
+    <img src="{% static 'images/weather.png' %}" class="image" style="width: 100px; margin-bottom: 50px; margin-top: 5px;">
+  </div>
 
-    <nav class="navbar navbar-dark bg-primary" style="padding: 10px; margin-left: 20px; margin-right: 20px;">
-      <form method="post" class="col-md">
-        {% csrf_token %}
-        <div class="input-group">
-            <input type="text" class="form-control" id="cityInput" name="city" placeholder="Choose Your City ...">
-            <div class="input-group-btn">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
+  <nav class="navbar navbar-dark bg-primary" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
+    <form method="post" class="col-md">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" class="form-control" id="cityInput" name="city" placeholder="Choose Your City ..." autocomplete="off">
+        <div class="input-group-btn">
+          <button type="submit" class="btn btn-primary">Search</button>
         </div>
+      </div>
     </form>
-    </nav>
-    <br> <br>
-    <div class="row">
-      {% if country_code and temp and pressure %}
-      <div class="col d-flex justify-content-center">
-        <div class=" card text-white bg-light mb-6">
-        <div class=" card-body">
-          <h3 style="text-align: center;"><strong>{{city}}</strong></h3>
-          <h4><span class="badge badge-primary">Country Code :</span> {{country_code}}</h4>
-          <h4><span class="badge badge-primary">Temperature in Celsius :</span> {{temp}}</h4>
-          <h4><span class="badge badge-primary">Pressure :</span> {{pressure}} </h4>
-          <h4><span class="badge badge-primary">Forecast : </span> {{main}} <img
-              src="http://openweathermap.org/img/w/{{icon}}.png" alt="Image" style="width:70px"></h4>
-          <h4><span class="badge badge-primary">Description : </span> {{description}}</h4>
+</nav>
+<div id="suggestionsContainer" class="col-md" style="margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
+    <ul id="suggestionsList" class="list-group"></ul>
+</div>
+
+  <div class="row">
+    {% if data.country_code and data.temp and data.pressure %}
+    <div class="col d-flex justify-content-center">
+      <div class="card text-white bg-light mb-6">
+        <div class="card-body">
+          <h3 style="text-align: center;"><strong>{{ data.city }}</strong></h3>
+          <h4><span class="badge badge-primary">Country Code:</span> {{ data.country_code }}</h4>
+          <h4><span class="badge badge-primary">Temperature in Celsius:</span> {{ data.temp }}</h4>
+          <h4><span class="badge badge-primary">Pressure:</span> {{ data.pressure }}</h4>
+          <h4><span class="badge badge-primary">Forecast:</span> {{ data.main }} <img
+              src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="Weather Icon" style="width: 70px;"></h4>
+          <h4><span class="badge badge-primary">Description:</span> {{ data.description }}</h4>
         </div>
       </div>
-      {% else %}
-      <div class="col d-flex justify-content-center">
-        <div class=" card text-white mb-6" style="background-color: firebrick;">
-          <div class=" card-body">
-            <h3 style="text-align: center;"><strong>Error</strong></h3>
-            <h4>{{error}}</h4>
-          </div>
+    </div>
+    {% elif data.error %}
+    <div class="col d-flex justify-content-center">
+      <div class="card text-white mb-6" style="background-color: firebrick;">
+        <div class="card-body">
+          <h3 style="text-align: center;"><strong>Error</strong></h3>
+          <h4>{{ error }}</h4>
         </div>
       </div>
-      {% endif %}
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3NE0ZXWuxzJArM0nWo2T4-WlcvxlY2jI&libraries=places"></script>
-      <script src="{% static 'form.js' %}"></script>
-  </body>
+    </div>
+    {% endif %}
+  </div>
+  <script src="{% static 'form.js' %}"></script>
+</body>
 
 </html>
