@@ -117,12 +117,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 GOOGLE_API_KEY = "AIzaSyD3NE0ZXWuxzJArM0nWo2T4-WlcvxlY2jI"
 WEATHER_API_KEY = "156310ef9775541a86d266a877a2c8af"
 
