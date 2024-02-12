@@ -34,7 +34,7 @@ def index(request):
         
         if not city:
             data = {"error": "City is required."}
-            return render(request, "weatherApp/index.html", {"data": data})
+            return render(request, "index.html", {"data": data})
         
         try:
             api_key = settings.WEATHER_API_KEY
@@ -59,10 +59,10 @@ def index(request):
         except json.JSONDecodeError as e:
             data = {"error": str(e)}
 
-        return render(request, "weatherApp/index.html", {"data": data})
+        return render(request, "index.html", {"data": data})
 
     else:
-        return render(request, "weatherApp/index.html", {"data": {}})
+        return render(request, "index.html", {"data": {}})
     
 
 

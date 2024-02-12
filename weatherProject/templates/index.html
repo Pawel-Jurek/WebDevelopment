@@ -1,27 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 {% load static %}
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="{% static 'styles.css' %}" rel="stylesheet">
-  <title>Weather App</title>
-</head>
-
-<body>
-  <div id="jumbotron" class="jumbotron" style="text-align: center; margin-top: 50px">
+{% block body %}
+  
+  <div style="text-align: center; padding-top: 20px; color: #d9e8da;">
     <h1 class="display-5">Weather Desktop App</h1>
     <h5>Stay up to date with the current weather</h5>
 
     <img src="{% static 'images/weather.png' %}" class="image" style="width: 100px; margin-bottom: 50px; margin-top: 5px;">
   </div>
-
-  <nav class="navbar navbar-dark bg-primary" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
+  
+  <nav class="navbar navbar-dark" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
     <form method="post" class="col-md">
       {% csrf_token %}
-      <div class="input-group">
-        <input type="text" class="form-control" id="cityInput" name="city" placeholder="Choose Your City ..." autocomplete="off">
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" style="background-color: rgb(231, 254, 228);" id="cityInput" name="city" placeholder="Choose Your City ..." autocomplete="off">
         <div class="input-group-btn">
           <button type="submit" class="btn btn-primary">Search</button>
         </div>
@@ -34,8 +27,8 @@
 
   <div class="row">
     {% if data.country_code and data.temp and data.pressure %}
-    <div class="col d-flex justify-content-center">
-      <div class="card text-white bg-light mb-6">
+    <div class="col d-flex justify-content-center" style="margin-bottom: 50px;">
+      <div class="card text-white mb-6" style="background-color: rgb(42, 51, 114);">
         <div class="card-body">
           <h3 style="text-align: center;"><strong>{{ data.city }}</strong></h3>
           <h4><span class="badge badge-primary">Country Code:</span> {{ data.country_code }}</h4>
@@ -58,7 +51,9 @@
     </div>
     {% endif %}
   </div>
-  <script src="{% static 'form.js' %}"></script>
-</body>
+  
+  {% endblock %}
 
-</html>
+  {% block script %}
+    <script src="{% static 'form.js' %}"></script>
+  {% endblock %}
