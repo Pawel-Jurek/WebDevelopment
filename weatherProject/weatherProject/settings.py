@@ -77,6 +77,7 @@ TEMPLATES = [
     },
 ]
 
+
 AUTHENTICATION_BACKENDS = [   
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -136,8 +137,26 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-GOOGLE_API_KEY = "AIzaSyD3NE0ZXWuxzJArM0nWo2T4-WlcvxlY2jI"
-WEATHER_API_KEY = "156310ef9775541a86d266a877a2c8af"
+try:
+    from .local_settings import GOOGLE_API_KEY
+except ImportError:
+    GOOGLE_API_KEY = ""
+
+try:
+    from .local_settings import WEATHER_API_KEY
+except ImportError:
+    WEATHER_API_KEY = ""
+
+SOCIALACCOUNT_PROVIDERS = {
+  'google': {
+      'EMAIL_AUTHENTICATION': True
+  }
+}
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT = "http://127.0.0.1:8000/accounts/google/login/callback/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
