@@ -4,6 +4,8 @@ import json
 import urllib.request
 from django.conf import settings
 import requests
+
+from users.models import WeatherAppUser, WeatherSettings
 # Create your views here.
 
 from . import cityList
@@ -42,7 +44,7 @@ def index(request):
                 f'https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={api_key}').read()
 
             listOfData = json.loads(source)
-
+            #current_user = WeatherAppUser(id = request.user.id)
             data = {
                 "city": str(upperEachWord(postData)),
                 "country_code": str(listOfData['sys']['country']),
@@ -52,7 +54,29 @@ def index(request):
                 "description": str(listOfData['weather'][0]['description']),
                 "icon": str(listOfData['weather'][0]['icon']),
             }
-
+            if request.user.is_authenticated:
+                data.update({
+                    "feels_like": str(listOfData['main']['feels_like']) + ' °C',
+                    "temp_min": str(listOfData['main']['temp_min']) + ' °C',
+                    "temp_max": str(listOfData['main']['temp_max']) + ' °C',
+                    "wind": str(float(listOfData['wind']['speed']) * 3.6) + 'km / h', 
+                    "clouds": str(listOfData['clouds']["all"]) + ' %'
+                })
+                current_user = WeatherAppUser.objects.get(id=request.user.id) 
+                user_settings = current_user.weather_settings
+                temp_data = {
+                    "city": str(upperEachWord(postData)),
+                    "country_code": str(listOfData['sys']['country']),
+                    "icon": str(listOfData['weather'][0]['icon']),
+                }
+                for field in WeatherSettings._meta.fields:
+                    field_name = field.name
+                    field_value = getattr(user_settings, field_name)
+                    if field_value:
+                        if field_name in data:
+                            temp_data[field_name] = data[field_name]
+                data = temp_data
+                print(data)
         except urllib.error.HTTPError as e:
             data = {"error": "City not found."}
         

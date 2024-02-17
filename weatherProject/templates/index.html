@@ -26,18 +26,22 @@
 </div>
 
   <div class="row">
-    {% if data.country_code and data.temp and data.pressure %}
+    {% if data.country_code %}
     <div class="col d-flex justify-content-center" style="margin-bottom: 50px;">
-      <div class="card text-white mb-6" style="background-color: rgb(42, 51, 114);">
+      <div class="card text-white mb-6" style="background-color: rgb(72, 94, 138);">
         <div class="card-body">
           <h3 style="text-align: center;"><strong>{{ data.city }}</strong></h3>
-          <h4><span class="badge badge-primary">Country Code:</span> {{ data.country_code }}</h4>
-          <h4><span class="badge badge-primary">Temperature in Celsius:</span> {{ data.temp }}</h4>
-          <h4><span class="badge badge-primary">Pressure:</span> {{ data.pressure }}</h4>
-          <h4><span class="badge badge-primary">Forecast:</span> {{ data.main }} <img
-              src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="Weather Icon" style="width: 70px;"></h4>
-          <h4><span class="badge badge-primary">Description:</span> {{ data.description }}</h4>
-        </div>
+          {% for key, value in data.items %}
+            {% if key == "description" %}
+              <h4><span class="badge badge-primary">Forecast:</span> {{ data.main }} <img
+                src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="Weather Icon" style="width: 70px;"></h4>
+            {% else %}
+              {% if key != "icon" and key != "city" %}
+                <h4><span class="badge badge-primary">{{ key|capfirst  }}:</span> {{ value }}</h4>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
       </div>
     </div>
     {% elif data.error %}

@@ -10,12 +10,11 @@ class WeatherSettings(models.Model):
     feels_like = models.BooleanField(default=False)
     temp_min = models.BooleanField(default=False)
     temp_max = models.BooleanField(default=False)
-    rain = models.BooleanField(default=False)
+    wind = models.BooleanField(default=False)
     clouds = models.BooleanField(default=False)
     pressure = models.BooleanField(default=True)
     main = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
-    icon = models.BooleanField(default=True)
 
 class WeatherAppUser(AbstractUser):
     weather_settings = models.OneToOneField(WeatherSettings, on_delete=models.CASCADE, null=True)
