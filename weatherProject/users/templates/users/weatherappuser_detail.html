@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1 style="color: white;">{{ object.username }}</h1>
+
+<a style="color: white;" href="{% url 'index' %}">Return to main page</a>
+{% endblock %}
