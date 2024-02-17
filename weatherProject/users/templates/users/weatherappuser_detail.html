@@ -1,7 +1,16 @@
 {% extends "layout.html" %}
+{% load crispy_forms_tags %}
 
 {% block body %}
-<h1 style="color: white;">{{ object.username }}</h1>
-
+<h1 style="color: white; text-align: center;">Welcome in your profile page, {{ object.username }}!</h1>
+<hr style="color:white">
+<div style="margin-bottom: 50px;">
+    <h2 style="color: white;">Displayed weather settings</h2>
+    <form method="post" action="" style="color: white;">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="btn btn-secondary">Save</button>
+    </form>
+</div>
 <a style="color: white;" href="{% url 'index' %}">Return to main page</a>
 {% endblock %}
