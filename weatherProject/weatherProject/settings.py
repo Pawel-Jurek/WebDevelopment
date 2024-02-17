@@ -40,12 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'weatherApp',
+    'users',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5',
+
 ]
 
 MIDDLEWARE = [
@@ -128,6 +132,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'users.WeatherAppUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -149,9 +154,20 @@ except ImportError:
 
 SOCIALACCOUNT_PROVIDERS = {
   'google': {
-      'EMAIL_AUTHENTICATION': True
+      'EMAIL_AUTHENTICATION': True,
+      'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
   }
 }
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 ACCOUNT_EMAIL_REQUIRED = True
 
@@ -162,3 +178,4 @@ ACCOUNT_LOGOUT_REDIRECT = "http://127.0.0.1:8000/accounts/google/login/callback/
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

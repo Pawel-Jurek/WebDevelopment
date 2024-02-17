@@ -7,8 +7,6 @@ body {
 main{
   background-color: #004b38;
   min-height: calc(100vh - 266px);
+  padding: 20px;
 }
 
-#content{
-  background-color: #a4cec3;
-}
